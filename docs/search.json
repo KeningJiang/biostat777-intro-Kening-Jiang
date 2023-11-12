@@ -1,16 +1,37 @@
 [
   {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
-    "section": "",
-    "text": "About this site\n\n1 + 1\n\n[1] 2"
-  },
-  {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "biostat777-intro-Kening-Jiang",
+    "title": "Kening Jiang",
     "section": "",
-    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites.\n\n1 + 1\n\n[1] 2"
+    "text": "Welcome!\nThanks for stopping by my site!\nMy name is Kening Jiang, a PhD student in Epidemiology at Johns Hopkins Bloomberg School of Public Health."
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "Kening Jiang",
+    "section": "",
+    "text": "Kening Jiang is a 3rd year PhD student in Epidemiology of Aging. She received her MHS degree in Epidemiology from Johns Hopkins Bloomberg School of Public Health and previously worked as a biostatistician at the Johns Hopkins Cochlear Center for Hearing and Public Health. She is interested in studying the underlying mechanisms of cognitive aging, especially how potentially modifiable factors including sensory loss and sleep disturbances contribute to cognitive decline and dementia among older adults."
+  },
+  {
+    "objectID": "about.html#bio",
+    "href": "about.html#bio",
+    "title": "Kening Jiang",
+    "section": "",
+    "text": "Kening Jiang is a 3rd year PhD student in Epidemiology of Aging. She received her MHS degree in Epidemiology from Johns Hopkins Bloomberg School of Public Health and previously worked as a biostatistician at the Johns Hopkins Cochlear Center for Hearing and Public Health. She is interested in studying the underlying mechanisms of cognitive aging, especially how potentially modifiable factors including sensory loss and sleep disturbances contribute to cognitive decline and dementia among older adults."
+  },
+  {
+    "objectID": "about.html#education",
+    "href": "about.html#education",
+    "title": "Kening Jiang",
+    "section": "Education 👩‍🎓",
+    "text": "Education 👩‍🎓\nJohns Hopkins Bloomberg School of Public Health | Baltimore, MD\nPhD student in Epidemiology | August 2022 - Present\nJohns Hopkins Bloomberg School of Public Health | Baltimore, MD\nMHS in Epidemiology | August 2018 - May 2020"
+  },
+  {
+    "objectID": "about.html#experience",
+    "href": "about.html#experience",
+    "title": "Kening Jiang",
+    "section": "Experience 📚",
+    "text": "Experience 📚\nJohns Hopkins Cochlear Center for Hearing and Public Health | Baltimore, MD\nBiostatistician | June 2020 - July 2022"
   }
 ]

@@ -1,11 +1,23 @@
 ---
-title: "biostat777-intro-Kening-Jiang"
+title: "Kening Jiang"
+image: headshot.jpg
+toc: false
+about: 
+  template: trestles
+  image-shape: round
+  image-width: 20em
+  links:
+    - text: Email
+      href: mailto:kjiang7@jhmi.edu
+    - text: Affiliation
+      href: https://jhucochlearcenter.org/kening-jiang-mhs.html
+    - text: Google Scholar
+      href: https://scholar.google.com/citations?hl=en&user=J64T4xYAAAAJ&view_op=list_works&authuser=1&sortby=pubdate
+    - text: GitHub
+      href: https://github.com/KeningJiang
 ---
 
-This is a Quarto website.
+# Welcome!
+Thanks for stopping by my site! 
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
-
-```{r}
-1 + 1
-```
+My name is Kening Jiang, a PhD student in Epidemiology at Johns Hopkins Bloomberg School of Public Health.
