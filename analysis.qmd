@@ -7,11 +7,12 @@ nocite: |
 
 # Research question
 
-To describe and compare the Measles, Mumps, and Rubella (MMR) vaccine rates and overall vaccine rates among public and private schools in California and Ohio
+To describe and compare the Measles, Mumps, and Rubella (MMR) vaccination rates and overall vaccination rates among public and private schools in California and Ohio
 
 # Why vaccinating children is important
 
 ![](vaccine.png){fig-align="left"}
+From: [Center for Disease Control and Prevention](https://www.cdc.gov/vaccines/parents/why-vaccinate/vaccine-decision.html#:~:text=Because%20a%20baby's%20immune%20system,build%20up%20their%20natural%20defenses)
 
 # Intended audience
 
@@ -19,7 +20,7 @@ Public health practitioners, schools, and parents in California and Ohio
 
 # Original data
 
-Immunization rate data for schools in the US, as compiled by [The Wall Street Journal](https://www.wsj.com/graphics/school-measles-rate-map/). Modified dataset was included in TidyTuesday.
+Immunization rate data for schools in the US, as compiled by [The Wall Street Journal](https://www.wsj.com/graphics/school-measles-rate-map/). Modified dataset was included in [TidyTuesday](https://github.com/rfordatascience/tidytuesday).
 
 # Data dictionary
 
@@ -43,7 +44,7 @@ if (!dir.exists(here("data"))) {
 if (!file.exists(here("data", "tuesdata_measles.RDS"))) {
     tuesdata <- tidytuesdayR::tt_load("2020-02-25")
 
-    # save the files to RDS objects
+# save the files to RDS objects
     saveRDS(tuesdata$measles, file = here("data", "tuesdata_measles.RDS"))
 }
 
@@ -56,6 +57,8 @@ measles <- readRDS(here("data", "tuesdata_measles.RDS"))
 ```{r datawrangling, warning=FALSE, message=FALSE}
 #| code-fold: true
 #| code-summary: "Show the code"
+
+# Clean the original measles dataset
 measles_clean<- 
   measles %>%
   mutate(type = replace(type, which(is.na(type)), "Other")) %>%
@@ -63,7 +66,8 @@ measles_clean<-
   filter(overall>=0) %>%
   select(-c('xrel','xmed', 'xper','lat','lng')) %>%
   filter(state=="California" | state=="Ohio")
-    
+
+# Create a summary dataset from the cleaned dataset
 measles_summary <- 
   measles_clean %>%
   group_by(state, type)  %>%
@@ -81,7 +85,7 @@ measles_summary <-
 ::: callout-important
 ## Pay Attention
 
-Substantial missingmess of variables like school type. Only California and Ohio were analyzed due to relatively complete data.
+Substantial missingness of variables like school type. Only California and Ohio were analyzed due to relatively complete data.
 :::
 
 # Figure 1. Number of public and private schools in California and Ohio
@@ -90,6 +94,8 @@ Substantial missingmess of variables like school type. Only California and Ohio 
 #| column: margin
 #| code-fold: true
 #| code-summary: "Show the code"
+
+# Include a margin summary table
 knitr::kable(
   measles_summary[1:4, 1:3]
 )
@@ -98,6 +104,7 @@ knitr::kable(
 ```{r figure1, fig.height=8, fig.width=8, fig.align="center", warning=FALSE, results="asis"}
 #| code-fold: true
 #| code-summary: "Show the code"
+
 # Define a custom theme to start with
 custom_theme <- theme(
   panel.background = element_blank(),
@@ -108,6 +115,7 @@ custom_theme <- theme(
 )
 
 figure1 <- ggplot(data=measles_summary, aes(x=state, y=n, fill=type)) +
+           # Add stacked bar plot
            geom_bar(stat="identity") +
            scale_fill_manual(name = "School type",
                              values=c("#E1BE6A", "#5D3A9B"),
@@ -120,6 +128,7 @@ figure1 <- ggplot(data=measles_summary, aes(x=state, y=n, fill=type)) +
                 title="Number of public and private schools in California and Ohio",
                 subtitle = "A much higher number of public schools than private schools",
                 caption = "Kening Jiang") +
+           # Modify the theme
            custom_theme +
                  theme(axis.text.x=element_text(size=12),
                        axis.text.y=element_text(size=14),
@@ -132,17 +141,20 @@ figure1 <- ggplot(data=measles_summary, aes(x=state, y=n, fill=type)) +
                        strip.background = element_rect(fill="#D3E1D0"),
                        plot.caption = element_text(size=14)
                  )
-  
+# Display the plot
 figure1 
 ```
 
 # Figure 2. Distribution of Measles, Mumps, and Rubella (MMR) vaccination rate by school type in California and Ohio
-```{r figure2, fig.height=8, fig.width=6, fig.align="center", warning=FALSE, results="asis"}
+```{r figure2, fig.height=8, fig.width=10, fig.align="center", warning=FALSE, results="asis"}
 #| code-fold: true
 #| code-summary: "Show the code"
+
 Figure2 <- ggplot(measles_clean, aes(x=type, y=mmr, color=type)) +
+           # Add box plot
            geom_boxplot() +
            stat_summary(fun.y=mean, geom="point", shape=23, size=4) +
+           # Stratify the plot by state
            facet_wrap(~ state, ncol=2) +
            scale_color_manual(name = "School type",
                              values=c("#E1BE6A", "#5D3A9B"),
@@ -152,10 +164,11 @@ Figure2 <- ggplot(measles_clean, aes(x=type, y=mmr, color=type)) +
            # Add labels
            labs(x="Shool type",
                 y="MMR vaccination rate",
-                title="Distribution of MMMR vaccination rate by school type in California and Ohio",
+                title="Distribution of MMR vaccination rate by school type in California and Ohio",
                 subtitle = "Most schools have MMR vaccination rate above 90% \n
                             Overall similar patterns in California and Ohio",
                 caption = "Kening Jiang") +
+           # Modify the theme
            custom_theme +
                  theme(axis.text.x=element_text(size=12),
                        axis.text.y=element_text(size=14),
@@ -168,16 +181,20 @@ Figure2 <- ggplot(measles_clean, aes(x=type, y=mmr, color=type)) +
                        strip.background = element_rect(fill="#D3E1D0"),
                        plot.caption = element_text(size=14)
                  )
+# Display the plot
 Figure2 
 ```
 
 # Figure 3. Distribution of overall vaccination rate by school type in California and Ohio
-```{r figure3, fig.height=8, fig.width=6, fig.align="center", warning=FALSE, results="asis"}
+```{r figure3, fig.height=8, fig.width=10, fig.align="center", warning=FALSE, results="asis"}
 #| code-fold: true
 #| code-summary: "Show the code"
+
 Figure3 <- ggplot(measles_clean, aes(x=type, y=overall, color=type)) +
+           # Add box plot
            geom_boxplot() +
            stat_summary(fun.y=mean, geom="point", shape=23, size=4) +
+           # Stratify the plot by state
            facet_wrap(~ state, ncol=2) +
            scale_color_manual(name = "School type",
                              values=c("#E1BE6A", "#5D3A9B"),
@@ -191,6 +208,7 @@ Figure3 <- ggplot(measles_clean, aes(x=type, y=overall, color=type)) +
                 subtitle = "Most schools have overall vaccination rate above 90% \n
                             Overall similar patterns in California and Ohio",
                 caption = "Kening Jiang") +
+           # Modify the theme
            custom_theme +
                  theme(axis.text.x=element_text(size=12),
                        axis.text.y=element_text(size=14),
@@ -203,17 +221,21 @@ Figure3 <- ggplot(measles_clean, aes(x=type, y=overall, color=type)) +
                        strip.background = element_rect(fill="#D3E1D0"),
                        plot.caption = element_text(size=14)
                  )
-
+# Display the plot
 Figure3 
 ```
 
-# Figure 4. Comparison of measles, Mumps, and Rubella (MMR) and overall vaccination rate among public schools in California and Ohio"
-```{r figure4, fig.height=8, fig.width=8, fig.align="center", warning=FALSE, results="asis"}
+# Figure 4. Comparison of measles, Mumps, and Rubella (MMR) and overall vaccination rate among public schools in California and Ohio
+
+```{r figure4, fig.height=8, fig.width=10, fig.align="center", warning=FALSE, results="asis"}
 #| code-fold: true
 #| code-summary: "Show the code"
+
 Figure4 <- measles_clean %>% filter(type=="Public") %>%
            ggplot(aes(x=mmr, y=overall)) +
+           # Add jitter
            geom_jitter(color="#808080") +
+           # Add reference line y=x
            geom_abline(size=2) +
            geom_smooth(method='lm', color="#5D3A9B", size=2) +
            facet_wrap(~ state, ncol=2) +
@@ -226,7 +248,7 @@ Figure4 <- measles_clean %>% filter(type=="Public") %>%
                 title="MMR vs. overall vaccination rate among public schools in California and Ohio",
                 subtitle = "Lower MMR vaccination rate than overall vaccination rate",
                 caption = "Kening Jiang") +
-           custom_theme +
+          # Modify the theme
            custom_theme +
                  theme(axis.text.x=element_text(size=12),
                        axis.text.y=element_text(size=14),
@@ -239,9 +261,13 @@ Figure4 <- measles_clean %>% filter(type=="Public") %>%
                        strip.background = element_rect(fill="#D3E1D0"),
                        plot.caption = element_text(size=14)
                  )
-
+# Display the plot
 Figure4 
 ```
+::: {.column-margin}
+A smooth line imposing a linear relationship was fitted, and it was compared to the reference line of y=x.
+:::
+
 
 ::: callout-warning
 ## Caution
@@ -250,12 +276,15 @@ Sparse data points when vaccination rates are low.
 :::
 
 # Figure 5. Comparison of measles, Mumps, and Rubella (MMR) and overall vaccination rate among private schools in California and Ohio"
-```{r figure5, fig.height=8, fig.width=8, fig.align="center", warning=FALSE, results="asis"}
+```{r figure5, fig.height=8, fig.width=10, fig.align="center", warning=FALSE, results="asis"}
 #| code-fold: true
 #| code-summary: "Show the code"
+
 Figure5 <- measles_clean %>% filter(type=="Private") %>%
            ggplot(aes(x=mmr, y=overall)) +
+           # Add jitter
            geom_jitter(color="#808080") +
+           # Add reference line y=x
            geom_abline(size=2) +
            geom_smooth(method='lm', color="#5D3A9B", size=2) +
            facet_wrap(~ state, ncol=2) +
@@ -268,7 +297,7 @@ Figure5 <- measles_clean %>% filter(type=="Private") %>%
                 title="MMR vs. overall vaccination rate among private schools in California and Ohio",
                 subtitle = "Lower MMR vaccination rate than overall vaccination rate",
                 caption = "Kening Jiang") +
-           custom_theme +
+           # Modify the theme
            custom_theme +
                  theme(axis.text.x=element_text(size=12),
                        axis.text.y=element_text(size=14),
@@ -281,9 +310,12 @@ Figure5 <- measles_clean %>% filter(type=="Private") %>%
                        strip.background = element_rect(fill="#D3E1D0"),
                        plot.caption = element_text(size=14)
                  )
-
+# Display the plot
 Figure5 
 ```
+::: {.column-margin}
+A smooth line imposing a linear relationship was fitted, and it was compared to the reference line of y=x.
+:::
 
 ::: callout-warning
 ## Caution
@@ -292,6 +324,8 @@ Sparse data points when vaccination rates are low.
 :::
 
 # Summary
+
+This data analysis project used measles and overall vaccination rate data in California and Ohio, originally compiled by [The Wall Street Journal](https://www.wsj.com/graphics/school-measles-rate-map/). We described and compared measles and overall vaccination rates by school type in both states. A total of 12,826 public schools and 1,398 private schools in California and 2,078 public schools and 839 private schools were included in the analysis. Most schools have measles and overall vaccination rates above 90% and similar patterns were observed for both California and Ohio. The measles vaccination rates were slightly lower than the overall vaccination rates, especially when the vaccination rates were low. However, with high missingness, further analysis is needed.
 
 # Functions used
 
@@ -307,7 +341,7 @@ Sparse data points when vaccination rates are low.
     -   geom_jitter()
     -   geom_smooth()
 
-### References
+# References
 
 ::: {#refs}
 :::
